@@ -1,0 +1,23 @@
+#! /bin/csh
+# A shell script to perform modifications on the changefile for initex
+# to make a changefile for virtex.  This means changing constants and
+# debug..gubed, init..tini, stat..tats.
+#
+# To use it, say
+#	ini_to_vir initex.ch virtex.ch
+#
+ed - $1 <<edscriptend
+/@d init==/
+//
+s//&@{/p
+/@d tini==/
+s//&@t@>@}/p
+/@!mem_max=/
+//
+s/[0-9][0-9]*/32766/p
+/@!max_strings=/
+s/[0-9][0-9]*/6000/p
+/@!trie_size=/
+s/[0-9][0-9]*/6500/p
+w $2
+edscriptend

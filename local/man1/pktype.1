@@ -1,0 +1,34 @@
+.TH PKTYPE 1L  10/21/89
+.SH NAME
+pktype - translate a packed font file for humans to read
+.SH SYNTAX
+.B pktype
+pk_file_name [output_file_name]
+.SH DESCRIPTION
+.I PKtype
+translates a \fIpacked font\fR file (output by GFtoPK) to a
+file humans can read. It also serves as a PK file-validating
+program (i.e., if
+.I PKtype
+can read it, it's correct) and as an example of a PK-reading
+program for other software that wants to read PK files.
+.PP
+The pk_file_name on the command line must be complete. Because
+the resolution is part of the extension, it would not make
+sense to add on a default extension as is done with TeX or
+DVI-reading software. If no output_file_name is specified, the
+output goes to the standard output.
+.PP
+The output file gives a compact encoding of the packed encoding, using
+conventions described in the
+.I METAFONTware
+report. Run lengths of black pixels alternate with parenthesized run lengths
+of white pixels, and brackets are used to indicate when a row should be
+repeated.
+.SH "SEE ALSO"
+gftopk(1)
+.br
+Donald Knuth et al.,
+.I METAFONTware
+.SH "AUTHORS"
+Tom Rokicki wrote the program, and Don Knuth ported it to Unix.

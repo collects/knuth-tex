@@ -1,0 +1,12 @@
+# This is an example Makefile for the binarydemo program only
+
+PFLAGS= -g
+CFLAGS= -g
+PC= time pc
+
+bdemo: bdemo_ext.h bdemo_ext.o binarydemo.o
+	pc ${PFLAGS} -o bdemo binarydemo.o bdemo_ext.o
+
+clean:
+	rm -f *.o *~ core btest bdemo
+

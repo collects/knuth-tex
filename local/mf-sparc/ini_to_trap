@@ -1,0 +1,38 @@
+#! /bin/csh
+# A shell script to perform modifications on the changefile for inimf
+# to make a changefile for trapmf (used to test mf).
+#
+# To use it, say
+#	ini_to_trap inimf.ch trapmf.ch
+#
+ed - $1 <<edscriptend
+/debug=/
+//
+s/@{//p
+/gubed=/
+s/@t@>@}//p
+/@!mem_max=/
+//
+s/[0-9][0-9]*/3000/p
+/@!error_line=/
+s/[0-9][0-9]*/64/p
+/@!half_error_line=/
+s/[0-9][0-9]*/32/p
+/@!max_print_line=/
+s/[0-9][0-9]*/72/p
+/@!screen_width=/
+s/[0-9][0-9]*/100/p
+/@!screen_depth=/
+s/[0-9][0-9]*/200/p
+/@!gf_buf_size=/
+s/[0-9][0-9]*/8/p
+/@d mem_min=/
+//
+s/-[0-9]*/0/p
+/@d mem_top==/
+s/[0-9][0-9]*/3000/p
+/% BEGIN HOOK FOR THE TRAP TEST/
+.+1,.+5s/%//
+.+1,/% END HOOK FOR THE TRAP TEST/d
+w $2
+edscriptend

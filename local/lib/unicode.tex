@@ -1,0 +1,25 @@
+% macros to typeset with unicode in a rudimentary way
+
+% There's a program "unichar" which produces TeX code for typesetting
+% a given Unicode character, provided that one uses these macros.
+% At present, the character is assumed to have width but no height;
+% struts should be used in case extremely tall or deep characters appear.
+
+% Say "\input unicode" at the top of your file, and change \unicodeptsize
+% to whatever point size you are using (if it is not 10pt, the default).
+
+\newdimen\unicodeptsize \unicodeptsize=10pt
+
+\begingroup
+\catcode`@=11 % we will define two private macro names
+
+\gdef\Uni#1:#2:#3:#4:#5<#6>% ems:cols:rows:-hoff:rows+voff<hexbitmap>
+ {\leavevmode \hbox to#1\unicodeptsize
+    {\special{" 0 0 moveto currentpoint translate
+                \unic@deptsize \unic@deptsize scale #2 #3 true
+                [24 0 0 -24 #4 #5] {<#6>} imagemask}\hss}}
+
+{\catcode`p=12\catcode`t=12\gdef\uni@ff#1pt{#1}}
+\gdef\unic@deptsize{\expandafter\uni@ff\the\unicodeptsize\space}
+
+\endgroup

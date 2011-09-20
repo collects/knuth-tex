@@ -1,0 +1,11 @@
+{names of external C routines to include in Pascal binarydemo program}
+
+function testeof(var f:bytefile):boolean; external;
+
+function testreadaccess(var a:UNIXfilename):boolean; external;
+
+function testwriteaccess(var a:UNIXfilename):boolean; external;
+
+function flength(var f:bytefile):integer; external;
+
+procedure movetobyte(var f:bytefile; n:integer); external;

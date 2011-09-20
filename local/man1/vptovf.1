@@ -1,0 +1,26 @@
+.TH VPTOVF 1L  12/30/89
+.SH NAME
+vptovf - convert virtual property list files to virtual fonts
+.SH SYNOPSIS
+.B vptovf
+vpl_file_name vf_file_name tfm_file_name
+.SH DESCRIPTION
+.I VPtoVF
+translates a (human-readable) property list file to a pair of
+(program-readable) files in the VF (virtual font) and TFM (Tex font metric)
+formats. Thus, a virtual font
+file can be edited and its exact contents
+can be displayed mnemonically.
+New virtual fonts, which map characters as seen by TeX into an arbitrary
+sequence of low-level typesetting operations,
+can also be easily created in this way.
+.PP
+All three file names,
+.I vpl_file_name,
+.I vf_file_name,
+and
+.I tfm_file_name,
+must be complete. No adding of default extensions is done.
+.SH "AUTHOR"
+Donald Knuth wrote the program, based in part on an idea of David Fuchs,
+starting with the code for PLtoTF.

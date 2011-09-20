@@ -1,0 +1,48 @@
+program bdemo(output); {demonstrates binary file I/O in Pascal,
+                          using external C routines to help out}
+label 9999;
+const namelength=100;
+type byte=-128..127;
+ bytefile=packed file of byte;
+ UNIXfilename=packed array[1..namelength] of char;
+var fname:UNIXfilename;
+ bfile:bytefile;
+ k,l:integer;
+#include "bdemo_ext.h"
+procedure printstatus(n:integer);
+var x:byte;
+begin if testeof(bfile) then writeln('Byte ',n:1,' is EOF')
+else begin read(bfile,x); writeln('Byte ',n:1,' is ',x:1);
+  end;
+end;
+begin if argc=1 then {no file name argument given on command line}
+  begin writeln('Creating test file btest');
+  fname:='btest';
+  if not testwriteaccess(fname) then
+    begin writeln('I couldn''t create it!'); goto 9999;
+    end;
+  rewrite(bfile,fname);
+  for k:=-128 to 127 do write(bfile,k);
+  end
+else begin argv(1,fname); k:=1;
+  while (k<namelength)and(fname[k]<>' ') do k:=k+1;
+  writeln('Examining file ',fname:k,':');
+  end;
+if not testreadaccess(fname) then
+  begin writeln('I couldn''t read it!'); goto 9999;
+  end;
+reset(bfile,fname);
+l:=flength(bfile);
+writeln('The file is ',l:1,' bytes long');
+printstatus(1);
+if l>0 then
+  begin printstatus(2);
+  if l>1 then
+    begin movetobyte(bfile,l-2); printstatus(l-1);
+    end;
+  movetobyte(bfile,l-1); printstatus(l);
+  printstatus(l+1);
+  movetobyte(bfile,l div 2); printstatus(l div 2 + 1);
+  movetobyte(bfile,1); printstatus(2);
+  end;
+9999:end.

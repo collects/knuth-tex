@@ -1,0 +1,84 @@
+/* External procedures for the binary demo program */
+
+#include "h00vars.h"		/* defines Pascal I/O structure */
+
+#define namelength 100          /* should agree with binarydemo.p */
+
+movetobyte(filep,cnt)
+	register struct iorec	*filep;
+	int      	cnt;
+{
+	register FILE	*iop;	/* stdio-style FILE pointer */
+
+	iop = filep->fbuf;
+	fseek(iop,(long)cnt,0);
+}
+
+bool testeof(filep)
+	register struct iorec	*filep;
+{
+	register char c;
+	register FILE *iop; /* stdio-style FILE pointer */
+
+	if (filep->funit & EOFF)
+		return(TRUE);
+	else { /* check to see if next is EOF */
+		iop = filep->fbuf;
+		c = getc(iop);
+		if (c == EOF)
+			return(TRUE);
+		else {
+			ungetc(c,iop);
+			return(FALSE);
+			}
+		}
+}
+
+bool testreadaccess(fn)
+	char  *fn;
+{
+	register char *p;
+
+	fn[namelength-1] = ' ';
+	p = fn;
+	while (*p++ != ' ');
+	p--;
+	*p = '\0';
+	if (access(fn,4)==0) {
+	  *p = ' '; return(TRUE);}
+	else {*p = ' '; return(FALSE);}
+}
+
+bool testwriteaccess(fn)
+	char  *fn;
+{
+	register char *p;
+	int f;
+
+	fn[namelength-1] = ' ';
+	p=fn;
+	while (*p++ != ' ');
+	p--;
+	*p = '\0';
+	f = creat(fn,0666);   /* we try to create a new file, because
+				 simply testing write access with access(fn,2)
+				 will fail when the file doesn't exist */
+	*p = ' ';
+	if (f >= 0) {close(f); return(TRUE);}
+	else return(FALSE);
+}
+
+int flength(filep)
+	register struct iorec	*filep;
+{
+	register FILE	*iop;	/* stdio-style FILE pointer */
+	register long	pos;    /* current file position */
+	register int	len;	/* the file length */
+
+	iop = filep->fbuf;
+	pos = ftell(iop);
+	fseek(iop,0L,2);
+	len = ftell(iop);
+	fseek(iop,pos,0);
+	return(len);
+}

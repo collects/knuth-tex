@@ -1,0 +1,26 @@
+.TH VFTOVP 1L  12/30/89
+.SH NAME
+vftovp - convert virtual font (vf) files to virtual property list
+.SH SYNOPSIS
+.B vftovp
+vf_file_name tfm_file_name vpl_file_name
+.SH DESCRIPTION
+.I VFtoVP
+translates a (program-readable) virtual font file
+and its accompanying font metric file to
+a (human-readable) property list file. Thus, the virtual font
+can be edited, and its exact contents can be displayed mnemonically.
+.I VFtoVP
+also serves as a VF-file validating program; if no error messages are given,
+the input files are correct.
+.PP
+All three file names,
+.I vf_file_name,
+.I tfm_file_name,
+and
+.I vpl_file_name,
+must be complete. No adding of default extensions is done.
+.SH "AUTHOR"
+Donald Knuth wrote the program, based in part on an idea of David Fuchs,
+starting with the code for TFtoPL.
+
